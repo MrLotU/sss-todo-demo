@@ -21,6 +21,14 @@ final class TodoController {
             return todo.makeTodo().save(on: req)
         }.makeOutgoing(with: req)
     }
+    
+    func update(_ req: Request) throws -> Future<Todo.Outgoing> {
+        let todo = try req.parameters.next(Todo.self)
+        let incomming = try req.content.decode(Todo.Incomming.self)
+        return flatMap(to: Todo.self, todo, incomming) { todo, incomming in
+            return todo.patched(with: incomming).update(on: req)
+        }.makeOutgoing(with: req)
+    }
 
     /// Deletes a parameterized `Todo`.
     func delete(_ req: Request) throws -> Future<HTTPStatus> {

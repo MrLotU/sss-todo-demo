@@ -20,3 +20,14 @@ extension Todo: Content { }
 
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
 extension Todo: Parameter { }
+
+extension Todo {
+    func patched(with incomming: Incomming) -> Todo {
+        return Todo(
+            id: id,
+            title: incomming.title ?? title,
+            completed: incomming.completed ?? completed,
+            order: incomming.order ?? order
+        )
+    }
+}
